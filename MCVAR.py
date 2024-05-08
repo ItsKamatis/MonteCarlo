@@ -43,12 +43,6 @@ for m in range (0, mc_sims):
     portfolio_sims[:, m] = np.cumprod(np.inner(weights,
                                                daily_returns.T)+1)*initial_investment
 
-plt.plot(portfolio_sims)
-plt.ylabel('Portfolio Value')
-plt.xlabel('Days')
-plt.title('Monte Carlo Simulation of Portfolio')
-plt.show()
-
 def mcvar(returns, alpha):
     #Input series of returns
     #out % return distribution to given confidence value of alpha
@@ -79,4 +73,12 @@ mcvar = initial_investment - mcCvar(portfolio_returns, alpha)
 print('Value at Risk: ${}'.format(round(var, 2)))
 print('Conditional Value at Risk: ${}'.format(round(mcvar, 2)))
 
+plt.plot(portfolio_sims)
+plt.ylabel('Portfolio Value')
+plt.xlabel('Days')
+plt.title('Monte Carlo Simulation of Portfolio')
+plt.axhline(initial_investment - var, color='r', linestyle='--', label='VaR')
+plt.axhline(initial_investment - mcvar, color='g', linestyle='--', label='CVaR')
+plt.legend()
+plt.show()
 
