@@ -14,7 +14,7 @@ This repository hosts a Python script designed to perform a Monte Carlo simulati
 
 ## Installation
 First, clone this repository to your local machine: 
-git clone https://github.com/ItsKamatis/MonteCarlo.git
+- git clone https://github.com/ItsKamatis/MonteCarlo.git
 
 Navigate to the project directory and install the required Python packages:
 cd MonteCarlo
@@ -22,7 +22,7 @@ pip install pip install pandas numpy matplotlib yfinance
 
 ## Usage
 Run the script from the command line:
-python MCVAR.py
+- python MCVAR.py
 
 Make sure to adjust the stock symbols and the initial investment amount as needed in the script to fit your portfolio.
 
