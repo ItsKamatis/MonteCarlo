@@ -13,7 +13,7 @@ def get_data(stock, start, end):
     cov_matrix = returns.cov()
     return mean_returns, cov_matrix
 
-stocklist = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META']
+stocklist = ['NVDA', 'NOC', 'AAL', 'FSHOX', 'TSLA']
 stocks = [stock + '' for stock in stocklist]
 end = dt.datetime.today()
 start = end - dt.timedelta(days=300)
@@ -47,6 +47,33 @@ plt.plot(portfolio_sims)
 plt.ylabel('Portfolio Value')
 plt.xlabel('Days')
 plt.title('Monte Carlo Simulation of Portfolio')
-plt.show()
+#plt.show()
+
+def mcvar(returns, alpha):
+    #Input series of returns
+    #out % return distribution to given confidence value of alpha
+    if isinstance(returns, pd.Series):
+        returns = np.percentile(returns, alpha)
+    else:
+        raise TypeError('Expected a pandas Series')
+    return np.percentile(returns, alpha)
+
+def mcCvar(returns, alpha=5):
+    #Input series of returns
+    #out Cvar or expected shortfall return distribution to given confidence
+    # level of alpha
+    if isinstance(returns, pd.Series):
+        belowVar = returns <= np.percentile(returns, alpha)
+        return returns[belowVar].mean()
+    else:
+        raise TypeError('Expected a pandas Series')
+
+portfolio_returns = pd.Series(portfolio_sims[-1, :])
+
+var = initial_investment - mcvar(portfolio_returns, 5)
+mcvar = initial_investment - mcCvar(portfolio_returns, 5)
+
+print('Value at Risk: ${}'.format(round(var, 2)))
+print('Conditional Value at Risk: ${}'.format(round(mcvar, 2)))
 
 
