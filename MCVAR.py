@@ -22,19 +22,19 @@ mean_returns, cov_matrix = get_data(stocks, start, end)
 
 weights = np.random.random(len(mean_returns))
 weights /= np.sum(weights)
-
+#############################
 #Monte Carlo Simulation
 #Number of iterations
-mc_sims = 100
-T = 100 #timeframe in days
-
+mc_sims = 1000
+T = 120 #timeframe in days
+#############################
 meanM = np.full(shape=(T, len(weights)), fill_value=mean_returns)
 meanM = meanM.T
 
 portfolio_sims = np.full(shape=(T, mc_sims), fill_value=0.0)
-
-initial_investment = 100000
-
+########################
+initial_investment = 300000
+########################
 for m in range (0, mc_sims):
     #MC loops
     Z = np.random.normal(size=(T, len(weights)))
@@ -47,7 +47,7 @@ plt.plot(portfolio_sims)
 plt.ylabel('Portfolio Value')
 plt.xlabel('Days')
 plt.title('Monte Carlo Simulation of Portfolio')
-#plt.show()
+plt.show()
 
 def mcvar(returns, alpha):
     #Input series of returns
@@ -58,7 +58,10 @@ def mcvar(returns, alpha):
         raise TypeError('Expected a pandas Series')
     return np.percentile(returns, alpha)
 
-def mcCvar(returns, alpha=5):
+
+#Make sure to change the alpha value to 5% or 95% for the desired confidence level
+alpha = 2
+def mcCvar(returns, alpha):
     #Input series of returns
     #out Cvar or expected shortfall return distribution to given confidence
     # level of alpha
@@ -70,8 +73,8 @@ def mcCvar(returns, alpha=5):
 
 portfolio_returns = pd.Series(portfolio_sims[-1, :])
 
-var = initial_investment - mcvar(portfolio_returns, 5)
-mcvar = initial_investment - mcCvar(portfolio_returns, 5)
+var = initial_investment - mcvar(portfolio_returns, alpha)
+mcvar = initial_investment - mcCvar(portfolio_returns, alpha)
 
 print('Value at Risk: ${}'.format(round(var, 2)))
 print('Conditional Value at Risk: ${}'.format(round(mcvar, 2)))
