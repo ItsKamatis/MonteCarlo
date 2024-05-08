@@ -73,6 +73,7 @@ mcvar = initial_investment - mcCvar(portfolio_returns, alpha)
 print('Value at Risk: ${}'.format(round(var, 2)))
 print('Conditional Value at Risk: ${}'.format(round(mcvar, 2)))
 
+##Plotting simulations and VaR and CVaR
 plt.plot(portfolio_sims)
 plt.ylabel('Portfolio Value')
 plt.xlabel('Days')
